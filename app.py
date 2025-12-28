@@ -5,6 +5,7 @@ import random
 
 app = Flask(__name__)
 
+# Load Model
 with open('resolution_model.pkl', 'rb') as file:
     model = pickle.load(file)
 
@@ -36,16 +37,20 @@ def predict():
             distance = float(request.form['distance'])
 
             res_type_num = resolution_mapping[res_type_str]
+            
+            # Feature Array (Direct Numpy Array, No Pandas needed)
             features = np.array([[gender, age, res_type_num, relationship, attendance, stress, willpower, laziness, social_media, friends, distance]])
+            
+            # Prediction using Model
             prediction = model.predict(features)
             days = int(prediction[0])
 
-            # --- 😂 FUNNY HINGLISH VERDICTS ---
+            # --- SAVAGE ROAST LOGIC ---
             cause = "Bas mann nahi kiya."
             tip = "Soja bhai."
-            color = "#ff4757" # Red
+            color = "#ff4757" 
 
-            # --- 1. Find a Relationship (Special Request) ---
+            # 1. Find a Relationship
             if res_type_str == 'Find a Relationship':
                 if days < 10:
                     cause = "Tumhari shakal aur harkatein match nahi kar rahi."
@@ -60,16 +65,16 @@ def predict():
                     cause = "Shabash! Mummy bahu/damaad dhundne hi wali thi."
                     tip = "Tinder delete kar aur confidence rakh."
 
-            # --- 2. Stop Stalking Ex ---
+            # 2. Stop Stalking Ex
             elif res_type_str == 'Stop Stalking Ex':
                 if social_media > 3:
                     cause = "Tu phir se uski ID search kar raha hai, jhooth mat bol."
                     tip = "Block button use kar, decoration ke liye nahi hai."
-                    days = 0 # Force fail
+                    days = 0 
                 else:
                     cause = "Lagta hai self-respect wapas aa gayi."
 
-            # --- 3. Academic Comeback ---
+            # 3. Academic Comeback
             elif res_type_str == 'Academic Comeback':
                 if attendance < 60:
                     cause = f"Attendance {attendance}% hai. HOD tumhara 'Moye Moye' kar dega."
@@ -77,7 +82,7 @@ def predict():
                 else:
                     cause = "Padhne baitha par 5 min baad Reel scroll karne laga."
 
-            # --- 4. Gym/Fitness ---
+            # 4. Gym/Fitness
             elif res_type_str == 'Gym/Fitness':
                 if laziness > 7:
                     cause = "Tujhse kambal nahi uthta, dumbbell kya uthega?"
@@ -85,13 +90,13 @@ def predict():
                 elif distance > 8:
                     cause = "Gym door hai, aur tu aalsi hai. Khatam, Tata, Bye Bye."
 
-            # --- 5. Start Business ---
+            # 5. Start Business
             elif res_type_str == 'Start a Business':
                 if laziness > 5:
                     cause = "Shark Tank dekh ke Josh aaya tha, ab thanda ho gaya."
                     tip = "Job hi karle, business tere bas ka nahi."
 
-            # --- 6. Generic Roasts ---
+            # 6. Generic Roasts
             elif social_media > 6:
                 cause = "Screen Time: 8 Hours. Future: Andhera."
                 tip = "Phone phek de, shayad life ban jaye."
@@ -100,7 +105,7 @@ def predict():
                 cause = "Itna stress lega to ganja ho jayega."
                 tip = "Chai pi, chill kar."
 
-            # --- Verdict Titles (Funny) ---
+            # Verdicts
             if days < 5: verdict = "Tumse Na Ho Payega 💀"
             elif days < 20: verdict = "Koshish Achi Thi 🤡"
             else: verdict = "System Faad Denge 🔥"
