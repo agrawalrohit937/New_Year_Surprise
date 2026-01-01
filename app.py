@@ -1,19 +1,19 @@
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
+import os
 import random
 
 app = Flask(__name__)
 
-# Load Model
-with open('resolution_model.pkl', 'rb') as file:
-    model = pickle.load(file)
+# --- LOAD MODEL ---
+model_path = 'resolution_model.pkl'
+model = None
 
-resolution_mapping = {
-    'Gym/Fitness': 0, 'Learn Coding': 1, 'Save Money': 2, 'Quit Smoking': 3,
-    'Read More Books': 4, 'Healthy Diet': 5, 'Find a Relationship': 6,
-    'Start a Business': 7, 'Stop Procrastination': 8, 'Academic Comeback': 9, 'Stop Stalking Ex': 10
-}
+if os.path.exists(model_path):
+    with open(model_path, 'rb') as file:
+        data = pickle.load(file)
+        model = data['model']
 
 @app.route('/')
 def home():
@@ -23,100 +23,90 @@ def home():
 def predict():
     if request.method == 'POST':
         try:
-            # Inputs
-            gender = int(request.form['gender'])
-            age = int(request.form['age'])
-            res_type_str = request.form['resolution_type']
-            relationship = int(request.form['relationship'])
-            attendance = int(request.form['attendance'])
-            stress = int(request.form['stress'])
+            name = request.form.get('name', 'User')
+            gender = int(request.form['gender']) # 0=Female, 1=Male
+            res_type_raw = request.form['resolution'] 
+            
             willpower = int(request.form['willpower'])
             laziness = int(request.form['laziness'])
             social_media = float(request.form['social_media'])
-            friends = int(request.form['friends'])
-            distance = float(request.form['distance'])
+            friends = int(request.form['friends_support'])
 
-            res_type_num = resolution_mapping[res_type_str]
+            # --- SCORE GENERATION (Fake it to make them happy!) ---
+            # Hum random use karenge taaki score hamesha alag aaye, par high rahe.
+            base_score = random.randint(70, 95)
             
-            # Feature Array (Direct Numpy Array, No Pandas needed)
-            features = np.array([[gender, age, res_type_num, relationship, attendance, stress, willpower, laziness, social_media, friends, distance]])
+            # Boost logic
+            if willpower > 7: base_score += 5
+            if laziness < 4: base_score += 5
+
+            score = min(99, base_score) # Cap at 99%
+
+            # --- 🔮 GENDER SPECIFIC RESULTS 🔮 ---
             
-            # Prediction using Model
-            prediction = model.predict(features)
-            days = int(prediction[0])
+            title = ""
+            msg = ""
+            tip = ""
+            icon = ""
+            theme_color = "" # CSS Background for result
 
-            # --- SAVAGE ROAST LOGIC ---
-            cause = "Bas mann nahi kiya."
-            tip = "Soja bhai."
-            color = "#ff4757" 
+            # ====== 🎀 GIRL WORLD (Female) ======
+            if gender == 0:
+                theme_color = "linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%)" # Soft Pink Gradient
+                
+                # 💘 LOVE
+                if 'Relationship' in res_type_raw or 'Ex' in res_type_raw:
+                    icon = "💖"
+                    title = "Future Wifey Energy 💍"
+                    msg = "OMG! Your aura is radiating pure LOVE right now. You don't chase, you attract! 💅"
+                    tip = "💡 Tip: Wear pink tomorrow. Someone is going to confess their feelings. 🤫"
+                    score = max(85, score) # Girls ko love mein high score chahiye
 
-            # 1. Find a Relationship
-            if res_type_str == 'Find a Relationship':
-                if days < 10:
-                    cause = "Tumhari shakal aur harkatein match nahi kar rahi."
-                    tip = "Pehle nahana shuru kar, phir ladki/ladka dhund."
-                elif friends == 0:
-                    cause = "Tumhare dost hi tumhara katwa rahe hain (Toxic Friends)."
-                    tip = "Dost badal, kismat badal jayegi."
-                elif relationship == 1:
-                    cause = "Pehle wo 'Situationship' wale trauma se toh nikal ja."
-                    tip = "Kabir Singh banna band kar."
+                # 💸 MONEY
+                elif 'Business' in res_type_raw or 'Money' in res_type_raw:
+                    icon = "🥂"
+                    title = "Rich Mom Energy 💸"
+                    msg = "You are entering your 'Lucky Girl' era. Money is literally flowing towards you!"
+                    tip = "💡 Tip: Start visualizing your dream car. It's closer than you think. 🚗"
+
+                # 💪 FITNESS
                 else:
-                    cause = "Shabash! Mummy bahu/damaad dhundne hi wali thi."
-                    tip = "Tinder delete kar aur confidence rakh."
+                    icon = "🧘‍♀️"
+                    title = "Pilates Princess 🎀"
+                    msg = "Glowing skin, toned body, and peace of mind. You are becoming THAT girl."
+                    tip = "💡 Tip: Drink your water and take a cute mirror selfie. You look good! 📸"
 
-            # 2. Stop Stalking Ex
-            elif res_type_str == 'Stop Stalking Ex':
-                if social_media > 3:
-                    cause = "Tu phir se uski ID search kar raha hai, jhooth mat bol."
-                    tip = "Block button use kar, decoration ke liye nahi hai."
-                    days = 0 
+
+            # ====== ⚡ BOY WORLD (Male) ======
+            else:
+                theme_color = "linear-gradient(135deg, #141E30 0%, #243B55 100%)" # Dark Blue/Black Gradient
+                
+                # 💘 LOVE
+                if 'Relationship' in res_type_raw or 'Ex' in res_type_raw:
+                    icon = "👑"
+                    title = "The King 🗿"
+                    msg = "Stop worrying about her. Build your empire and she will come running."
+                    tip = "💡 Tip: Focus on your purpose. Women follow success, not desperation. 🚀"
+
+                # 💸 MONEY
+                elif 'Business' in res_type_raw or 'Money' in res_type_raw:
+                    icon = "🦁"
+                    title = "Top G Mindset 🏆"
+                    msg = "You are dangerous right now. The matrix cannot stop you. Pure dominance."
+                    tip = "💡 Tip: Work in silence today. Let your Lamborghini make the noise later. 🏎️"
+                    score = max(88, score) # Boys ko money mein high score chahiye
+
+                # 💪 FITNESS
                 else:
-                    cause = "Lagta hai self-respect wapas aa gayi."
+                    icon = "🦍"
+                    title = "Demon Back Loading... 💪"
+                    msg = "Light weight, baby! You are turning into a beast. Respect is earned in the gym."
+                    tip = "💡 Tip: Add 5kg more to your lift today. You are stronger than you think. 🔥"
 
-            # 3. Academic Comeback
-            elif res_type_str == 'Academic Comeback':
-                if attendance < 60:
-                    cause = f"Attendance {attendance}% hai. HOD tumhara 'Moye Moye' kar dega."
-                    tip = "Teacher ke pair pakad le, shayad pass ho jaye."
-                else:
-                    cause = "Padhne baitha par 5 min baad Reel scroll karne laga."
-
-            # 4. Gym/Fitness
-            elif res_type_str == 'Gym/Fitness':
-                if laziness > 7:
-                    cause = "Tujhse kambal nahi uthta, dumbbell kya uthega?"
-                    tip = "Gym ki fees donation samajh ke bhool ja."
-                elif distance > 8:
-                    cause = "Gym door hai, aur tu aalsi hai. Khatam, Tata, Bye Bye."
-
-            # 5. Start Business
-            elif res_type_str == 'Start a Business':
-                if laziness > 5:
-                    cause = "Shark Tank dekh ke Josh aaya tha, ab thanda ho gaya."
-                    tip = "Job hi karle, business tere bas ka nahi."
-
-            # 6. Generic Roasts
-            elif social_media > 6:
-                cause = "Screen Time: 8 Hours. Future: Andhera."
-                tip = "Phone phek de, shayad life ban jaye."
-            
-            elif stress > 8:
-                cause = "Itna stress lega to ganja ho jayega."
-                tip = "Chai pi, chill kar."
-
-            # Verdicts
-            if days < 5: verdict = "Tumse Na Ho Payega 💀"
-            elif days < 20: verdict = "Koshish Achi Thi 🤡"
-            else: verdict = "System Faad Denge 🔥"
-
-            if days > 25: color = "#2ed573" # Green
-            elif days > 7: color = "#ffa502" # Orange
-
-            return render_template('result.html', days=days, verdict=verdict, cause=cause, tip=tip, color=color)
+            return render_template('result.html', name=name, score=score, title=title, msg=msg, tip=tip, color_bg=theme_color, icon=icon, gender=gender)
 
         except Exception as e:
-            return str(e)
+            return f"Error: {str(e)}"
 
 if __name__ == '__main__':
     app.run(debug=True)
