@@ -2,152 +2,145 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The Verdict 🔮</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Vibe Result</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;900&family=Pacifico&display=swap" rel="stylesheet">
     <style>
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Outfit', sans-serif;
-            background: #111;
-            height: 100vh;
+            background: {{ color_bg }};
             display: flex;
-            align-items: center;
             justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Animated Background */
-        .bg {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: linear-gradient(125deg, #2c3e50, #000000, #434343);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            z-index: -1;
-        }
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* The Card */
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 40px;
-            padding: 50px 40px;
-            width: 90%;
-            max-width: 500px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Text Styles */
-        h4 {
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 14px;
-            color: #aaa;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
+            overflow: hidden;
+            text-align: center;
         }
 
-        .verdict {
-            font-size: 42px;
-            font-weight: 900;
-            margin: 20px 0;
-            text-transform: uppercase;
-            background: -webkit-linear-gradient(#fff, #999);
+        /* --- THE CARD (Adapts to Gender) --- */
+        .card {
+            /* Python se gender aayega: 0=Female (White Card), 1=Male (Dark Card) */
+            background: {% if gender == 0 %} rgba(255, 255, 255, 0.95) {% else %} rgba(15, 23, 42, 0.95) {% endif %};
+            color: {% if gender == 0 %} #333 {% else %} #fff {% endif %};
+            
+            padding: 40px 30px;
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            max-width: 360px;
+            width: 90%;
+            position: relative;
+            z-index: 10;
+            border: {% if gender == 0 %} 5px solid #fff {% else %} 2px solid #3b82f6 {% endif %};
+            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* --- SCORE STYLING --- */
+        .score-box {
+            font-family: 'Pacifico', cursive;
+            font-size: 5.5rem;
+            margin: 10px 0;
+            line-height: 1;
+            /* Female: Pink Gradient | Male: Neon Blue */
+            background: {% if gender == 0 %} -webkit-linear-gradient(45deg, #ff758c, #ff7eb3) {% else %} -webkit-linear-gradient(45deg, #2980b9, #6dd5fa) {% endif %};
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            line-height: 1.1;
+            filter: drop-shadow(0 2px 0px rgba(0,0,0,0.1));
         }
 
-        .days-circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid {{ color }};
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            box-shadow: 0 0 30px {{ color }};
-            animation: glow 2s infinite alternate;
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin: 10px 0;
+            line-height: 1.2;
+            text-transform: uppercase;
+            color: {% if gender == 0 %} #ff4757 {% else %} #6dd5fa {% endif %};
         }
 
-        @keyframes glow {
-            from { box-shadow: 0 0 10px {{ color }}; }
-            to { box-shadow: 0 0 30px {{ color }}; }
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 500;
+            opacity: 0.9;
         }
 
-        .days-num { font-size: 60px; font-weight: 900; line-height: 1; }
-        .days-lbl { font-size: 12px; text-transform: uppercase; opacity: 0.8; }
-
-        .roast-box {
-            background: rgba(0,0,0,0.3);
-            padding: 20px;
+        /* --- TIP BOX --- */
+        .tip-box {
+            background: {% if gender == 0 %} #fff0f5 {% else %} #1e293b {% endif %};
+            border: 2px dashed {% if gender == 0 %} #ff758c {% else %} #3b82f6 {% endif %};
+            color: {% if gender == 0 %} #d63031 {% else %} #a4b0be {% endif %};
+            padding: 15px;
             border-radius: 20px;
-            margin-top: 30px;
-            border-left: 5px solid {{ color }};
-            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
         }
 
-        .roast-text { font-size: 18px; font-style: italic; margin-bottom: 10px; color: #fff; }
-        .tip-text { font-size: 14px; color: #ddd; }
+        .icon-box {
+            font-size: 5rem;
+            display: inline-block;
+            animation: float 3s infinite ease-in-out;
+        }
 
         .btn {
             display: inline-block;
-            margin-top: 40px;
-            padding: 15px 40px;
-            background: white;
-            color: black;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 900;
-            text-transform: uppercase;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            transform: scale(1.1);
-            background: {{ color }};
+            padding: 16px 45px;
+            background: {% if gender == 0 %} linear-gradient(to right, #ff758c, #ff7eb3) {% else %} linear-gradient(to right, #243B55, #141E30) {% endif %};
             color: white;
-            box-shadow: 0 0 20px {{ color }};
+            text-decoration: none;
+            font-weight: 800;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
         }
+        .btn:hover { transform: scale(1.05); }
+
+        /* Confetti for Girls */
+        {% if gender == 0 %}
+        .confetti {
+            position: absolute; width: 10px; height: 10px; background-color: #fff;
+            animation: fall linear forwards; top: -10vh; z-index: 1;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(720deg); } }
+        {% endif %}
+
+        @keyframes popUp { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
 
     </style>
 </head>
 <body>
-    <div class="bg"></div>
+    
+    {% if gender == 0 %}
+    <script>
+        function createConfetti() {
+            const colors = ['#ff9a9e', '#fad0c4', '#a18cd1', '#fbc2eb'];
+            for (let i = 0; i < 50; i++) {
+                const c = document.createElement('div');
+                c.classList.add('confetti');
+                c.style.left = Math.random() * 100 + 'vw';
+                c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                c.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(c);
+            }
+        }
+        window.onload = createConfetti;
+    </script>
+    {% endif %}
 
     <div class="card">
-        <h4>AI Analysis Report</h4>
+        <div class="icon-box">{{ icon }}</div>
         
-        <div class="verdict" style="color: {{ color }} !important; -webkit-text-fill-color: {{ color }} !important;">
-            {{ verdict }}
-        </div>
+        <div class="score-box">{{ score }}%</div>
+        
+        <h1>{{ title }}</h1>
+        <p>“{{ msg }}”</p>
 
-        <div class="days-circle">
-            <div class="days-num">{{ days }}</div>
-            <div class="days-lbl">Days</div>
-        </div>
-
-        <div class="roast-box">
-            <div class="roast-text">"{{ cause }}"</div>
-            <div class="tip-text">💡 <b>Tip:</b> {{ tip }}</div>
-        </div>
-
-        <a href="/" class="btn">Try Again 🔄</a>
+        <div class="tip-box">{{ tip }}</div>
+        
+        <a href="/" class="btn">Claim Energy ✨</a>
     </div>
+
 </body>
 </html>
