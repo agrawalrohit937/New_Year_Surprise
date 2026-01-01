@@ -3,254 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Check 2026 ✨</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <title>Manifest 2026 ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. THE AESTHETIC BACKGROUND --- */
+        /* --- 🎀 ANIMATED BACKGROUND 🎀 --- */
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Outfit', sans-serif;
-            background-color: #ffdee9;
-            background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
-            min-height: 100vh;
+            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffd1ff, #a18cd1);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
             overflow-x: hidden;
         }
-
-        /* The Moving Gradient Mesh */
-        .gradient-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradient {
+        @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* --- 2. GLASS CARD CONTAINER --- */
-        .glass-container {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            width: 90%;
-            max-width: 500px;
-            padding: 40px;
-            margin: 50px 0;
+        /* --- FLOATING BLOBS (Aesthetic Decor) --- */
+        .blob {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: -1;
+            animation: float 8s infinite ease-in-out;
+        }
+        .blob-1 { width: 300px; height: 300px; top: -50px; left: -100px; background: #ffdde1; }
+        .blob-2 { width: 250px; height: 250px; bottom: -50px; right: -80px; background: #e0c3fc; animation-delay: 2s; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-30px); } 100% { transform: translateY(0px); } }
+
+        /* --- ✨ THE GLASS CARD ✨ --- */
+        .container {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 40px;
+            padding: 3rem 2.5rem;
+            width: 85%;
+            max-width: 380px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.8);
             text-align: center;
-            animation: slideUp 0.8s ease-out;
+            position: relative;
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* --- 3. TYPOGRAPHY --- */
-        h1 {
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            font-size: 32px;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-        p.subtitle {
-            color: rgba(255,255,255,0.9);
-            font-size: 14px;
-            margin-bottom: 30px;
-            font-weight: 300;
-        }
-
-        /* --- 4. FORM ELEMENTS --- */
-        .input-group {
-            text-align: left;
-            margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 10px 15px;
-            border-radius: 15px;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .input-group:hover, .input-group:focus-within {
-            background: rgba(255, 255, 255, 0.95);
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        h2 {
+            font-family: 'Pacifico', cursive;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 2px 2px rgba(255,255,255,0.5));
         }
 
         label {
-            font-size: 11px;
+            color: #636e72;
             font-weight: 700;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        label i { color: #e73c7e; margin-right: 5px; }
-
-        input, select {
-            border: none;
-            background: transparent;
-            width: 100%;
-            font-family: 'Outfit', sans-serif;
-            font-size: 15px;
-            color: #333;
-            outline: none;
-            font-weight: 500;
-        }
-
-        /* Side by Side Inputs */
-        .row { display: flex; gap: 10px; }
-        .col { flex: 1; }
-
-        /* Range Slider */
-        input[type=range] {
-            height: 6px;
-            background: linear-gradient(to right, #e73c7e, #23a6d5);
-            border-radius: 5px;
-            margin-top: 5px;
+            margin-top: 20px;
+            display: block;
+            text-align: left;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
         }
         
-        .range-value {
-            font-size: 12px;
-            font-weight: bold;
-            color: #e73c7e;
-            float: right;
+        /* --- MODERN INPUTS --- */
+        input, select {
+            width: 100%;
+            padding: 15px;
+            margin-top: 8px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background: #fff;
+            color: #2d3436;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 4px rgba(255, 154, 158, 0.2);
+            transform: translateY(-2px);
         }
 
-        /* --- 5. BUTTON --- */
+        /* Cute Sliders */
+        input[type="range"] {
+            margin-top: 15px;
+            accent-color: #ff758c;
+            height: 6px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        /* --- GLOW BUTTON --- */
         button {
             width: 100%;
-            margin-top: 20px;
             padding: 18px;
+            margin-top: 35px;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
             border: none;
             border-radius: 50px;
-            background: #fff;
-            color: #e73c7e;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-        }
-
-        button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-            background: #e73c7e;
             color: white;
+            font-weight: 800;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 1px;
         }
+        button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 117, 140, 0.6);
+        }
+        button:active { transform: scale(0.95); }
 
     </style>
 </head>
 <body>
+    
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
-    <div class="gradient-bg"></div>
-
-    <div class="glass-container">
-        <h1>🔮 Aura Check 2026</h1>
-        <p class="subtitle">Will you slay the year or get cooked? 💅</p>
-        
-        <form action="/predict" method="POST">
+    <div class="container">
+        <h2>Manifest 2026 🕯️</h2>
+        <form action="/predict" method="post">
             
-            <div class="row">
-                <div class="col input-group">
-                    <label><i class="fas fa-venus-mars"></i> Gender</label>
-                    <select name="gender">
-                        <option value="0">Female 👸</option>
-                        <option value="1">Male 🤴</option>
-                    </select>
-                </div>
-                <div class="col input-group">
-                    <label><i class="fas fa-birthday-cake"></i> Age</label>
-                    <input type="number" name="age" value="20">
-                </div>
-            </div>
+            <label>Who is checking? (Name)</label>
+            <input type="text" name="name" placeholder="e.g. Aditi" required>
 
-            <div class="input-group">
-                <label><i class="fas fa-bullseye"></i> The 2026 Goal</label>
-                <select name="resolution_type">
-                    <option value="Gym/Fitness">💪 Gym / Fitness</option>
-                    <option value="Healthy Diet">🥗 Healthy Diet / Glow Up</option>
-                    <option value="Quit Smoking">🚭 Quit Smoking / Vaping</option>
-                    <option value="Academic Comeback">📚 Academic Comeback</option>
-                    <option value="Learn Coding">💻 Learn Coding / AI</option>
-                    <option value="Start a Business">🚀 Start a Business</option>
-                    <option value="Save Money">💸 Save Money</option>
-                    <option value="Stop Stalking Ex">🚫 Stop Stalking Ex</option>
-                    <option value="Find a Relationship">❤️ Find a Relationship</option>
-                    <option value="Stop Procrastination">⏳ Stop Procrastination</option>
-                    <option value="Read More Books">📖 Read More Books</option>
-                </select>
-            </div>
+            <label>Select Gender</label>
+            <select name="gender">
+                <option value="0">Female (Soft Girl Era) 🎀</option>
+                <option value="1">Male (Cool Vibes) ⚡</option>
+            </select>
 
-            <div class="input-group">
-                <label><i class="fas fa-heart-broken"></i> Relationship Status</label>
-                <select name="relationship">
-                    <option value="0">Single (Ready to Mingle) 🦅</option>
-                    <option value="1">It's Complicated 😵‍💫</option>
-                    <option value="2">Taken / Committed 🔒</option>
-                </select>
-            </div>
+            <label>What is your Goal?</label>
+            <select name="resolution">
+                <option>Find a Relationship 💘</option>
+                <option>Stop Stalking Ex 🚫</option>
+                <option>Start a Business 💸</option>
+                <option>Academic Comeback 📚</option>
+                <option>Gym/Fitness 💪</option>
+            </select>
 
-            <div class="input-group">
-                <label><i class="fas fa-brain"></i> Stress Level <span class="range-value" id="stressVal">5/10</span></label>
-                <input type="range" name="stress" min="1" max="10" value="5" oninput="document.getElementById('stressVal').innerText = this.value + '/10'">
-            </div>
+            <label>Internal Fire (Willpower) 🔥</label>
+            <input type="range" name="willpower" min="1" max="10" value="7">
 
-            <div class="input-group">
-                <label><i class="fas fa-percentage"></i> Attendance <span class="range-value" id="attVal">75%</span></label>
-                <input type="range" name="attendance" min="0" max="100" value="75" oninput="document.getElementById('attVal').innerText = this.value + '%'">
-            </div>
+            <label>Laziness Level (Be Honest) 🐨</label>
+            <input type="range" name="laziness" min="1" max="10" value="3">
 
-            <div class="row">
-                <div class="col input-group">
-                    <label><i class="fas fa-fire"></i> Willpower</label>
-                    <input type="number" name="willpower" placeholder="1-10" required>
-                </div>
-                <div class="col input-group">
-                    <label><i class="fas fa-bed"></i> Laziness</label>
-                    <input type="number" name="laziness" placeholder="1-10" required>
-                </div>
-            </div>
+            <label>Social Media (Hrs/Day) 📱</label>
+            <input type="number" name="social_media" step="0.5" placeholder="e.g. 2.5">
 
-            <div class="input-group">
-                <label><i class="fab fa-instagram"></i> Social Media (Hrs/Day)</label>
-                <input type="number" step="0.5" name="social_media" value="3">
-            </div>
+            <label>Support System? 🤝</label>
+            <select name="friends_support">
+                <option value="1">Yes, full support ✅</option>
+                <option value="0">No, doing it alone ❌</option>
+            </select>
 
-            <div class="input-group">
-                <label><i class="fas fa-users"></i> Friend Circle</label>
-                <select name="friends">
-                    <option value="0">🤡 Toxic / Party Lovers</option>
-                    <option value="1">😐 Normal Humans</option>
-                    <option value="2">😇 Supportive Angels</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label><i class="fas fa-road"></i> Difficulty / Distance</label>
-                <input type="number" name="distance" value="5">
-            </div>
-
-            <button type="submit">Reveal My Destiny ✨</button>
+            <button type="submit">Read My Energy ✨</button>
         </form>
     </div>
 </body>
